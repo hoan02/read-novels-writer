@@ -1,6 +1,7 @@
+import { Inter as FontSans } from "next/font/google";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Protect } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 import "@/styles/globals.css";
 import Forbidden403 from "@/components/layouts/Forbidden403";
@@ -9,8 +10,12 @@ import { ToasterProvider } from "@/lib/providers/ToasterProvider";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import Sidebar from "@/components/layouts/Sidebar";
 import TopBar from "@/components/layouts/TopBar";
+import { Separator } from "@/components/ui/separator";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Writer Hub",
@@ -25,7 +30,12 @@ export default function RootLayout({
   return (
     <ClerkVIProvider>
       <html lang="vi">
-        <body className={inter.className}>
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
           <ToasterProvider />
           <Protect
             permission="org:writer:create"
@@ -39,9 +49,10 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Sidebar />
-              <div className="h-full fixed top-0 left-[260px]">
+              <div className="h-full fixed top-0 left-[260px] right-0 bottom-0">
                 <TopBar />
-                <div className="h-full scrollbar-thin overflow-y-scroll">
+                <Separator />
+                <div className="h-full w-full scrollbar-thin overflow-y-scroll">
                   {children}
                 </div>
               </div>

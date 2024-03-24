@@ -1,0 +1,88 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs";
+import { connectToDB } from "@/lib/mongodb/mongoose";
+import Novel from "@/lib/models/novel.model";
+import { generateSlug } from "@/utils/generateSlug";
+import Chapter from "../models/chapter.model";
+// import Rating from "../models/rating.model";
+// import Marked from "../models/marked.model";
+
+export const createNovel = async (formData: NovelFormCreate) => {
+  const { novelName, author, genres, description, urlCover } = formData;
+  const novelSlug = generateSlug(novelName);
+  try {
+    const { userId } = auth();
+    await connectToDB();
+    const newNovel = new Novel({
+      novelName,
+      novelSlug,
+      author,
+      genres,
+      description,
+      urlCover,
+      uploader: userId,
+    });
+    await newNovel.save();
+    revalidatePath("/danh-sach-truyen");
+    return { success: true, message: "Truyện đã được tạo thành công!" };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Không thể tạo truyện!");
+  }
+};
+
+export const updateNovel = async (novelId: string, data: any) => {
+  const { name, type, author, urlCover, description } = data;
+  const slug = generateSlug(name);
+  try {
+    await connectToDB();
+    const novel = await Novel.findByIdAndUpdate(
+      novelId,
+      {
+        name,
+        slug,
+        type,
+        author,
+        urlCover,
+        description,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!novel) {
+      throw new Error("Không tìm thấy truyện!");
+    }
+    return { success: true, message: "Truyện đã được cập nhật!" };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Không thể cập nhật truyện!");
+  }
+};
+
+export const deleteNovel = async (novelId: string) => {
+  try {
+    await connectToDB();
+
+    const novel = await Novel.findById(novelId);
+    if (!novel) {
+      throw new Error("Không tìm thấy truyện!");
+    }
+
+    // await Rating.deleteMany({ novelId: novelId });
+    await Chapter.deleteMany({ novelId: novelId });
+    // await Marked.deleteMany({ novelSlug: novel.slug });
+
+    const deletedNovel = await Novel.findByIdAndDelete(novelId);
+    if (!deletedNovel) {
+      throw new Error("Không tìm thấy truyện!");
+    }
+
+    return { success: true, message: "Truyện đã được xóa!" };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Không thể xóa truyện!");
+  }
+};

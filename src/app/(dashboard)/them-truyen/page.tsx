@@ -1,17 +1,19 @@
-import { Grid } from "@mui/material";
 import NovelSubmissionGuidelines from "@/components/novel/NovelSubmissionGuidelines";
-import NovelForm from "@/components/novel/NovelFormCreate";
+import NovelForm from "@/components/novel/NovelForm";
 
 const CreateNovel = () => {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
-        <NovelForm />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <NovelSubmissionGuidelines />
-      </Grid>
-    </Grid>
+    // <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    //   <div className="col-span-1 md:col-span-1">
+    //     <NovelForm />
+    //   </div>
+    //   <div className="col-span-1 md:col-span-1">
+    //     <NovelSubmissionGuidelines />
+    //   </div>
+    // </div>
+    <div>
+      <NovelForm />
+    </div>
   );
 };
 

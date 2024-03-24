@@ -1,7 +1,6 @@
 import { CldUploadWidget } from "next-cloudinary";
-import { Plus, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
-import { Button } from "../ui/button";
 import Image from "next/image";
 
 interface ImageUploadProps {
@@ -28,14 +27,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             className="relative w-[300px] h-[400px] rounded-lg border-2"
           >
             <div className="absolute top-0 right-0 z-10">
-              <Button
-                type="button"
+              <button
                 onClick={() => onRemove(value)}
-                size="sm"
-                className="bg-red-1 text-white"
+                className="bg-red-600 text-white rounded p-2"
               >
                 <Trash className="h-4 w-4" />
-              </Button>
+              </button>
             </div>
             <Image
               src={value}
@@ -59,14 +56,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         >
           {({ open }) => {
             return (
-              <Button
-                type="button"
+              <button
                 onClick={() => open()}
-                className="bg-grey-2 text-green-700 w-[300px] h-[400px] rounded-lg border-2"
+                className="text-green-700 w-[300px] h-[400px] rounded-lg border-2"
               >
-                <Plus className="h-4 w-4 mr-2" />
                 Chọn ảnh
-              </Button>
+              </button>
             );
           }}
         </CldUploadWidget>

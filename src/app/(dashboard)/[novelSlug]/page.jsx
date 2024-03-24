@@ -1,5 +1,5 @@
 const NovelDetailsPage = () => {
-  return <div>NovelDetailsPage</div>;
+  return <div>dcm</div>;
 };
 
 export default NovelDetailsPage;
