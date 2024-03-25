@@ -15,10 +15,18 @@ const novelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    genres: {
-      type: [String],
-      default: [],
-    },
+    genres: [
+      {
+        label: {
+          type: String,
+          required: true,
+        },
+        value: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     tags: {
       type: [String],
       default: [],

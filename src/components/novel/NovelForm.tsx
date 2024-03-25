@@ -17,18 +17,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import ImageUpload from "../customUI/ImageUpload";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Delete from "../customUI/Delete";
 import { novelGenres } from "@/lib/constants";
 import MultipleSelector, { Option } from "../customUI/MultipleSelector";
+import { createNovel, updateNovel } from "@/lib/actions/novel.action";
 
 const OPTIONS: Option[] = novelGenres.map((genre) => ({
   label: genre.name,
@@ -94,31 +88,23 @@ const NovelForm: React.FC<NovelFormProps> = ({ initialData }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // const url = initialData ? `/api/novels/${initialData._id}` : "/api/novels";
-
-    // try {
-    //   const novelRequest = fetch(url, {
-    //     method: "POST",
-    //     body: JSON.stringify(values),
-    //   });
-
-    //   toast.promise(novelRequest, {
-    //     loading: "Loading...",
-    //     success: `Truyện đã được ${initialData ? "cập nhật" : "tạo mới"}`,
-    //     error: "Có điều gì đó đã xảy ra sai! Vui lòng thử lại.",
-    //   });
-
-    //   const res = await novelRequest;
-
-    //   if (res.ok) {
-    //     setTimeout(() => {
-    //       router.push("/novels");
-    //     }, 1000);
-    //   }
-    // } catch (error) {
-    //   console.error("[novels_POST]", error);
-    // }
+    const data = initialData
+      ? {
+          novelId: initialData._id,
+          ...values,
+        }
+      : values;
+    let res;
+    try {
+      if (initialData) {
+        res = await updateNovel(data);
+      } else {
+        res = await createNovel(data);
+      }
+      toast.success(res.message);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

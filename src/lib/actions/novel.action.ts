@@ -9,8 +9,8 @@ import Chapter from "../models/chapter.model";
 // import Rating from "../models/rating.model";
 // import Marked from "../models/marked.model";
 
-export const createNovel = async (formData: NovelFormCreate) => {
-  const { novelName, author, genres, description, urlCover } = formData;
+export const createNovel = async (data: any) => {
+  const { novelName, author, genres, description, urlCover } = data;
   const novelSlug = generateSlug(novelName);
   try {
     const { userId } = auth();
@@ -33,17 +33,17 @@ export const createNovel = async (formData: NovelFormCreate) => {
   }
 };
 
-export const updateNovel = async (novelId: string, data: any) => {
-  const { name, type, author, urlCover, description } = data;
-  const slug = generateSlug(name);
+export const updateNovel = async (data: any) => {
+  const { novelId, novelName, genres, author, urlCover, description } = data;
+  const slug = generateSlug(novelName);
   try {
     await connectToDB();
     const novel = await Novel.findByIdAndUpdate(
       novelId,
       {
-        name,
+        novelName,
         slug,
-        type,
+        genres,
         author,
         urlCover,
         description,

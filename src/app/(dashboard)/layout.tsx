@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import Sidebar from "@/components/layouts/Sidebar";
 import TopBar from "@/components/layouts/TopBar";
 import { Separator } from "@/components/ui/separator";
+import Layout from "@/components/layouts/Layout";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkVIProvider>
-      <html lang="vi">
+      <html lang="vi" suppressHydrationWarning>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -48,14 +49,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Sidebar />
-              <div className="h-full fixed top-0 left-[260px] right-0 bottom-0">
-                <TopBar />
-                <Separator />
-                <div className="h-full w-full scrollbar-thin overflow-y-scroll">
-                  {children}
-                </div>
-              </div>
+              <Layout children={children} />
             </ThemeProvider>
           </Protect>
         </body>
