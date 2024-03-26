@@ -16,12 +16,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-import ImageUpload from "../customUI/ImageUpload";
+import ImageUpload from "../custom-ui/ImageUpload";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Delete from "../customUI/Delete";
+import Delete from "../custom-ui/Delete";
 import { novelGenres } from "@/lib/constants";
-import MultipleSelector, { Option } from "../customUI/MultipleSelector";
+import MultipleSelector, { Option } from "../custom-ui/MultipleSelector";
 import { createNovel, updateNovel } from "@/lib/actions/novel.action";
 
 const OPTIONS: Option[] = novelGenres.map((genre) => ({

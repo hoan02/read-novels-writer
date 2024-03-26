@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import Delete from "../customUI/Delete";
+import Delete from "../custom-ui/Delete";
 
 export const columns: ColumnDef<ChapterType>[] = [
   {

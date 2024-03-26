@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
   AreaChart,
@@ -9,20 +9,57 @@ import {
   Link2,
   List,
   PlusCircle,
+  Ellipsis,
 } from "lucide-react";
 import { Button } from "../ui/button";
-import Delete from "../customUI/Delete";
-import { DataTableColumnHeader } from "../table/DataTableColumHeader";
+import Delete from "../custom-ui/Delete";
+import { DataTableColumnHeader } from "../data-table/DataTableColumHeader";
+import { Checkbox } from "../ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const novelColumns: ColumnDef<NovelType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "novelName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Tên truyện" />
     ),
+    cell: ({ row }) => (
+      <div className="max-w-[500px] truncate font-medium">
+        {row.original.novelName}
+      </div>
+    ),
   },
   {
-    accessorKey: "chapters",
+    accessorKey: "chapterCount",
     header: ({ column }) => {
       return (
         <Button
@@ -34,66 +71,73 @@ export const novelColumns: ColumnDef<NovelType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <p>{row.original.chapterCount}</p>,
-  },
-  {
-    id: "addChapter",
     cell: ({ row }) => (
-      <Link
-        href={`/${row.original.novelSlug}/them-chuong`}
-        title="Thêm chương mới"
-      >
-        <PlusCircle />
-      </Link>
+      <div className="w-[50px]">{row.original.chapterCount}</div>
     ),
   },
   {
-    id: "list-chapter",
+    id: "actions",
     cell: ({ row }) => (
-      <Link
-        href={`/novels/${row.original._id}/list-chapter`}
-        title="Danh sách chương"
-      >
-        <List />
-      </Link>
-    ),
-  },
-
-  {
-    id: "edit",
-    cell: ({ row }) => (
-      <Link href={`/novels/${row.original._id}`} title="Chỉnh sửa truyện">
-        <FilePenLine />
-      </Link>
-    ),
-  },
-  {
-    id: "delete",
-    cell: ({ row }) => (
-      <Delete
-        item="novel"
-        id={row.original._id}
-        text={row.original.novelName}
-      />
-    ),
-  },
-  {
-    id: "statistic",
-    cell: ({ row }) => (
-      <Link href={`/novels/${row.original._id}/statistics`} title="Thống kê">
-        <AreaChart />
-      </Link>
-    ),
-  },
-  {
-    id: "link",
-    cell: ({ row }) => (
-      <Link
-        href={`${process.env.URL_READER}/truyen/${row.original.novelSlug}`}
-        title="Link tới truyện"
-      >
-        <Link2 />
-      </Link>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            aria-label="Open menu"
+            variant="ghost"
+            className="flex size-8 p-0 data-[state=open]:bg-muted"
+          >
+            <Ellipsis />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[200px] p-2">
+          <DropdownMenuItem>
+            <Link
+              href={`/${row.original.novelSlug}/them-chuong`}
+              className="flex gap-4 items-center"
+            >
+              <PlusCircle size={20} /> Thêm chương mới
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`/${row.original.novelSlug}}/danh-sach-chuong`}
+              className="flex gap-4 items-center"
+            >
+              <List size={20} /> Danh sách chương
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`/${row.original.novelSlug}`}
+              className="flex gap-4 items-center"
+            >
+              <FilePenLine size={20} /> Chỉnh sửa truyện
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`/${row.original.novelSlug}/thong-ke`}
+              className="flex gap-4 items-center"
+            >
+              <AreaChart size={20} /> Thống kê
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_READER_URL}truyen/${row.original.novelSlug}`}
+              className="flex gap-4 items-center"
+            >
+              <Link2 size={20} /> Đọc truyện
+            </Link>
+          </DropdownMenuItem>
+          <div className="px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-800 rounded">
+            <Delete
+              item="novel"
+              id={row.original._id}
+              text={row.original.novelName}
+            />
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
   },
 ];

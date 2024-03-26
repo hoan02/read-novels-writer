@@ -5,7 +5,6 @@ import Novel from "@/lib/models/novel.model";
 export const GET = async (req: NextRequest) => {
   try {
     await connectToDB();
-
     const novels = await Novel.find().sort({ createdAt: "desc" });
 
     return NextResponse.json(novels, { status: 200 });

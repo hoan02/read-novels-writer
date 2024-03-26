@@ -28,7 +28,7 @@ import {
 import { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import TextEditor from "../customUI/TextEditor";
+import TextEditor from "../custom-ui/TextEditor";
 
 const formSchema = z.object({
   chapterName: z.string().min(2).max(150),

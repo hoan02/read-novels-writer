@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/customUI/DataTable";
+import { DataTable } from "@/components/data-table/DataTable";
 import { novelColumns } from "@/components/novel/NovelColumns";
 import { getNovels } from "@/lib/data/novel";
 
@@ -9,7 +9,7 @@ const ListNovelPage = async () => {
       <p className="">Truyện đã đăng</p>
       <DataTable
         columns={novelColumns}
-        data={novels ? novels : []}
+        data={novels}
         searchKey="novelName"
       />
     </div>

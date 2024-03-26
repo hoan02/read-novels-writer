@@ -19,7 +19,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ModeToggle } from "@/components/customUI/ModeToggle";
+import { ModeToggle } from "@/components/custom-ui/ModeToggle";
 
 type MenuNav = {
   href: string;
