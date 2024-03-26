@@ -3,14 +3,11 @@ import type { Metadata } from "next";
 import { Protect } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
-import "@/styles/globals.css";
+import "../globals.css";
 import Forbidden403 from "@/components/layouts/Forbidden403";
 import ClerkVIProvider from "@/lib/providers/ClerkVIProvider";
 import { ToasterProvider } from "@/lib/providers/ToasterProvider";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
-import Sidebar from "@/components/layouts/Sidebar";
-import TopBar from "@/components/layouts/TopBar";
-import { Separator } from "@/components/ui/separator";
 import Layout from "@/components/layouts/Layout";
 
 const fontSans = FontSans({

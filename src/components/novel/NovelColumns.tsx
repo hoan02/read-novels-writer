@@ -2,18 +2,38 @@
 
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import {
+  ArrowUpDown,
+  AreaChart,
+  FilePenLine,
+  Link2,
+  List,
+  PlusCircle,
+} from "lucide-react";
+import { Button } from "../ui/button";
 import Delete from "../customUI/Delete";
-import { AreaChart, FilePenLine, Link2, List, PlusCircle } from "lucide-react";
+import { DataTableColumnHeader } from "../table/DataTableColumHeader";
 
 export const novelColumns: ColumnDef<NovelType>[] = [
   {
-    accessorKey: "name",
-    header: "Tên truyện",
-    cell: ({ row }) => <p>{row.original.novelName}</p>,
+    accessorKey: "novelName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tên truyện" />
+    ),
   },
   {
     accessorKey: "chapters",
-    header: "Số chương",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Số chương
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => <p>{row.original.chapterCount}</p>,
   },
   {
@@ -30,7 +50,10 @@ export const novelColumns: ColumnDef<NovelType>[] = [
   {
     id: "list-chapter",
     cell: ({ row }) => (
-      <Link href={`/novels/${row.original._id}/list-chapter`} title="Danh sách chương">
+      <Link
+        href={`/novels/${row.original._id}/list-chapter`}
+        title="Danh sách chương"
+      >
         <List />
       </Link>
     ),
@@ -47,7 +70,11 @@ export const novelColumns: ColumnDef<NovelType>[] = [
   {
     id: "delete",
     cell: ({ row }) => (
-      <Delete item="novel" id={row.original._id} text={row.original.novelName} />
+      <Delete
+        item="novel"
+        id={row.original._id}
+        text={row.original.novelName}
+      />
     ),
   },
   {
@@ -61,7 +88,10 @@ export const novelColumns: ColumnDef<NovelType>[] = [
   {
     id: "link",
     cell: ({ row }) => (
-      <Link href={`${process.env.URL_READER}/truyen/${row.original.novelSlug}`} title="Link tới truyện">
+      <Link
+        href={`${process.env.URL_READER}/truyen/${row.original.novelSlug}`}
+        title="Link tới truyện"
+      >
         <Link2 />
       </Link>
     ),

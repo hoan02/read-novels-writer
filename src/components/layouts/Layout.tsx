@@ -83,21 +83,15 @@ const Layout = ({
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-base font-medium lg:px-4">
-              {menuNav.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <Link
-                    href={item.href}
-                    key={item.label}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                      currentPath === item.href ? "bg-muted text-primary" : ""
-                    }`}
-                  >
-                    <IconComponent size={20} />
-                    <span className="ml-2">{item.label}</span>
-                  </Link>
-                );
-              })}
+              <ChildMenuNav
+                label="TRUYỆN CỦA TÔI"
+                items={menuNav.slice(0, 3)}
+              />
+              <ChildMenuNav
+                label="BÁO CÁO & HỖ TRỢ"
+                items={menuNav.slice(3, 5)}
+              />
+              <ChildMenuNav label="HỆ THỐNG" items={menuNav.slice(5, 7)} />
             </nav>
           </div>
           <div className="mt-auto p-4">Bottom</div>
@@ -142,10 +136,39 @@ const Layout = ({
           </div>
           <UserButton />
         </header>
-        <main className="max-h-screen p-2 lg:p-4 overflow-y-scroll scrollbar-thin">
-          {children}
+        <main className="h-[calc(100vh-3.5rem)] p-2 lg:p-4 overflow-y-scroll scrollbar-thin">
+          <div>{children}</div>
         </main>
       </div>
+    </div>
+  );
+};
+
+interface ChildMenuNav {
+  label: string;
+  items: MenuNav[];
+}
+
+const ChildMenuNav = ({ label, items }: ChildMenuNav) => {
+  const currentPath = usePathname();
+  return (
+    <div className="mt-2">
+      <p className="my-2 font-bold text-xs text-muted-foreground">{label}</p>
+      {items.map((item) => {
+        const Icon = item.icon;
+        return (
+          <Link
+            href={item.href}
+            key={item.label}
+            className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
+              currentPath === item.href ? "bg-muted text-primary" : ""
+            }`}
+          >
+            <Icon size={20} />
+            <span className="ml-2">{item.label}</span>
+          </Link>
+        );
+      })}
     </div>
   );
 };

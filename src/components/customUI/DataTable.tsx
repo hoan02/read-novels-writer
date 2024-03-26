@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -9,9 +8,10 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -21,7 +21,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { DataTablePagination } from "../table/DataTablePagination";
+import { DataTableViewOptions } from "../table/DataTableViewOptions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +35,7 @@ export function DataTable<TData, TValue>({
   data,
   searchKey,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -43,14 +45,17 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
+      sorting,
       columnFilters,
     },
   });
 
   return (
-    <div className="py-5">
-      <div className="flex items-center py-4">
+    <div className="">
+      <div className="flex items-center py-4 justify-between">
         <Input
           placeholder="Search..."
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
@@ -59,6 +64,9 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <div>
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
 
       <div className="rounded-md border">
@@ -84,7 +92,7 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow   
+                <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -112,25 +120,8 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className="w-20"
-        >
-          Trước
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className="w-20"
-        >
-          Sau
-        </Button>
+      <div className="my-4">
+        <DataTablePagination table={table} />
       </div>
     </div>
   );

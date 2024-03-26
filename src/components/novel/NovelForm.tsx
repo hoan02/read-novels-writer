@@ -102,6 +102,7 @@ const NovelForm: React.FC<NovelFormProps> = ({ initialData }) => {
         res = await createNovel(data);
       }
       toast.success(res.message);
+      router.push("/danh-sach-truyen");
     } catch (err) {
       console.log(err);
     }

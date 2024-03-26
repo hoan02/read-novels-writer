@@ -1,23 +1,24 @@
-import moment from "moment";
+import { format, differenceInMilliseconds } from "date-fns";
+import { vi } from "date-fns/locale";
 
 export default function formatTimeAgo(dateTime: string) {
-  const now = moment();
-  const postTime = moment(dateTime);
-  const diffSeconds = now.diff(postTime, "seconds");
-  const diffMinutes = now.diff(postTime, "minutes");
-  const diffHours = now.diff(postTime, "hours");
-  const diffDays = now.diff(postTime, "days");
-  const diffYears = now.diff(postTime, "years");
+  const now = new Date();
+  const postTime = new Date(dateTime);
+  const diffMilliseconds = differenceInMilliseconds(now, postTime);
 
-  if (diffYears >= 1) {
-    return moment(dateTime).format("DD/MM/YYYY");
-  } else if (diffDays >= 1) {
-    return `${diffDays} ngày trước`;
-  } else if (diffHours >= 1) {
-    return `${diffHours} giờ trước`;
-  } else if (diffMinutes >= 1) {
-    return `${diffMinutes} phút trước`;
+  if (diffMilliseconds >= 31536000000) {
+    // 1 year in milliseconds
+    return format(postTime, "dd/MM/yyyy", { locale: vi });
+  } else if (diffMilliseconds >= 86400000) {
+    // 1 day in milliseconds
+    return `${Math.floor(diffMilliseconds / 86400000)} ngày trước`;
+  } else if (diffMilliseconds >= 3600000) {
+    // 1 hour in milliseconds
+    return `${Math.floor(diffMilliseconds / 3600000)} giờ trước`;
+  } else if (diffMilliseconds >= 60000) {
+    // 1 minute in milliseconds
+    return `${Math.floor(diffMilliseconds / 60000)} phút trước`;
   } else {
-    return `${diffSeconds} giây trước`;
+    return `${Math.floor(diffMilliseconds / 1000)} giây trước`;
   }
 }
