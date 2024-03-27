@@ -29,3 +29,13 @@ type NovelType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+type ChapterType = {
+  novelSlug: String;
+  chapterName: String;
+  chapterIndex: Number;
+  content: String;
+  isLock: Boolean;
+  isPublic: Boolean;
+  publishedDate: Date | null;
+};

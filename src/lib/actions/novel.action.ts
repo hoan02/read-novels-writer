@@ -6,8 +6,6 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 import Novel from "@/lib/models/novel.model";
 import { generateSlug } from "@/utils/generateSlug";
 import Chapter from "../models/chapter.model";
-// import Rating from "../models/rating.model";
-// import Marked from "../models/marked.model";
 
 export const createNovel = async (data: any) => {
   const { novelName, author, genres, description, urlCover } = data;
@@ -29,20 +27,20 @@ export const createNovel = async (data: any) => {
     return { success: true, message: "Truyện đã được tạo thành công!" };
   } catch (error) {
     console.error(error);
-    throw new Error("Không thể tạo truyện!");
+    return new Error("Không thể tạo truyện!");
   }
 };
 
 export const updateNovel = async (data: any) => {
   const { novelId, novelName, genres, author, urlCover, description } = data;
-  const slug = generateSlug(novelName);
+  const novelSlug = generateSlug(novelName);
   try {
     await connectToDB();
-    const novel = await Novel.findByIdAndUpdate(
+    await Novel.findByIdAndUpdate(
       novelId,
       {
         novelName,
-        slug,
+        novelSlug,
         genres,
         author,
         urlCover,
@@ -52,13 +50,9 @@ export const updateNovel = async (data: any) => {
         new: true,
       }
     );
-    if (!novel) {
-      throw new Error("Không tìm thấy truyện!");
-    }
-    return { success: true, message: "Truyện đã được cập nhật!" };
-  } catch (error) {
-    console.error(error);
-    throw new Error("Không thể cập nhật truyện!");
+    revalidatePath("/danh-sach-truyen");
+  } catch (err) {
+    return new Error("Không thể cập nhật truyện!");
   }
 };
 
@@ -68,7 +62,7 @@ export const deleteNovel = async (novelId: string) => {
 
     const novel = await Novel.findById(novelId);
     if (!novel) {
-      throw new Error("Không tìm thấy truyện!");
+      return new Error("Không tìm thấy truyện!");
     }
 
     // await Rating.deleteMany({ novelId: novelId });
@@ -77,12 +71,19 @@ export const deleteNovel = async (novelId: string) => {
 
     const deletedNovel = await Novel.findByIdAndDelete(novelId);
     if (!deletedNovel) {
-      throw new Error("Không tìm thấy truyện!");
+      return new Error("Không tìm thấy truyện!");
     }
 
     return { success: true, message: "Truyện đã được xóa!" };
   } catch (error) {
     console.error(error);
-    throw new Error("Không thể xóa truyện!");
+    return new Error("Không thể xóa truyện!");
   }
+};
+
+export const checkNovelName = async (novelName: string) => {
+  const novelSlug = generateSlug(novelName);
+  await connectToDB();
+  const novel = await Novel.findOne({ novelSlug });
+  return { found: novel ? true : false };
 };

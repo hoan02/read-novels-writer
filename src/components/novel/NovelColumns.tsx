@@ -21,6 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import formatDate from "@/utils/formatDate";
 
 export const novelColumns: ColumnDef<NovelType>[] = [
   {
@@ -53,7 +54,7 @@ export const novelColumns: ColumnDef<NovelType>[] = [
       <DataTableColumnHeader column={column} title="Tên truyện" />
     ),
     cell: ({ row }) => (
-      <div className="max-w-[500px] truncate font-medium">
+      <div className="lg:w-[400px] truncate font-medium">
         {row.original.novelName}
       </div>
     ),
@@ -66,13 +67,62 @@ export const novelColumns: ColumnDef<NovelType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Số chương
+          Chương
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="w-[50px]">{row.original.chapterCount}</div>
+      <div className="text-end mr-8">{row.original.chapterCount}</div>
+    ),
+  },
+  {
+    accessorKey: "readCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Lượt đọc
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="text-end mr-8">{row.original.readCount}</div>
+    ),
+  },
+  {
+    accessorKey: "state",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Trạng thái
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="ml-4">{row.original.state}</div>,
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ngày đăng
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="ml-4">{formatDate(row.original.createdAt)}</div>
     ),
   },
   {
@@ -99,7 +149,7 @@ export const novelColumns: ColumnDef<NovelType>[] = [
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
-              href={`/${row.original.novelSlug}}/danh-sach-chuong`}
+              href={`/${row.original.novelSlug}/danh-sach-chuong`}
               className="flex gap-4 items-center"
             >
               <List size={20} /> Danh sách chương

@@ -29,10 +29,11 @@ import { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TextEditor from "../custom-ui/TextEditor";
+import { createChapter } from "@/lib/actions/chapter.action";
 
 const formSchema = z.object({
   chapterName: z.string().min(2).max(150),
-  chapterNumber: z.coerce.number(),
+  chapterIndex: z.coerce.number(),
   content: z.string().min(1).trim(),
   // isLock: z.boolean(),
   // price: z.number(),
@@ -46,13 +47,13 @@ interface CreateChapterFormProps {
 
 const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
   const router = useRouter();
-  const numNextChap = (dataNovel?.numberOfChapter ?? 0) + 1;
+  const numNextChap = (dataNovel?.chapterCount ?? 0) + 1;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       chapterName: "",
-      chapterNumber: numNextChap,
+      chapterIndex: numNextChap,
       content: "",
       // isLock: false,
       // price: 0,
@@ -64,32 +65,24 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
   useEffect(() => {
     const addChapterType = form.getValues("addChapterType");
     if (addChapterType === "next") {
-      form.setValue("chapterNumber", numNextChap);
+      form.setValue("chapterIndex", numNextChap);
     }
   }, [form.getValues("addChapterType")]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const data = { ...values, novelSlug: dataNovel?.novelSlug };
     try {
-      const chapterRequest = fetch("/api/chapters", {
-        method: "POST",
-        body: JSON.stringify({ ...values, novelId: dataNovel?._id }),
-      });
+      const res = await createChapter(data);
 
-      toast.promise(chapterRequest, {
-        loading: "Loading...",
-        success: "Chương đã được tạo mới.",
-        error: "Có lỗi xảy ra! Vui lòng thử lại.",
-      });
-
-      const res = await chapterRequest;
-
-      if (res.ok) {
+      if (res.success) {
+        toast.success(res.message);
         setTimeout(() => {
-          router.push(`/novels/${dataNovel?._id}/list-chapter`);
+          router.push(`/${dataNovel?.novelSlug}/danh-sach-chuong`);
         }, 1000);
       }
-    } catch (error) {
-      console.error("[chapters_POST]", error);
+    } catch (err: any) {
+      toast.error(err.message);
+      console.error("[chapters_POST]", err);
     }
   };
 
@@ -101,7 +94,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
             control={form.control}
             name="chapterName"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="max-w-[600px]">
                 <FormLabel>Tên chương</FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} />
@@ -115,7 +108,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
               control={form.control}
               name="addChapterType"
               render={({ field }) => (
-                <FormItem className="w-[200px]">
+                <FormItem className="w-[160px]">
                   <FormLabel>Cách đánh STT chương</FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -138,7 +131,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
 
             <FormField
               control={form.control}
-              name="chapterNumber"
+              name="chapterIndex"
               render={({ field }) => (
                 <FormItem className="lg:mt-0 mt-4">
                   <FormLabel>STT chương</FormLabel>
@@ -221,7 +214,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
             )}
           /> */}
         </div>
-        <Button className="bg-blue-1 text-white my-10" type="submit">
+        <Button className="my-10" type="submit">
           Submit
         </Button>
       </form>

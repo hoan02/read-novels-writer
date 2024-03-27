@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 
-import "@/styles/globals.css";
+import "../globals.css";
 import ClerkVIProvider from "@/lib/providers/ClerkVIProvider";
 
 const inter = Inter({ subsets: ["latin"] });

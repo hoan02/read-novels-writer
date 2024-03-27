@@ -165,7 +165,7 @@ const ChildMenuNav = ({ label, items }: ChildMenuNav) => {
             }`}
           >
             <Icon size={20} />
-            <span className="ml-2">{item.label}</span>
+            <span>{item.label}</span>
           </Link>
         );
       })}

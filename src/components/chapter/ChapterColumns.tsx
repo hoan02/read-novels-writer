@@ -8,14 +8,14 @@ export const columns: ColumnDef<ChapterType>[] = [
   {
     accessorKey: "chapterNumber",
     header: "STT",
-    cell: ({ row }) => <p>{row.original.chapterNumber}</p>,
+    cell: ({ row }) => <p>{`${row.original.chapterIndex}`}</p>,
   },
   {
     accessorKey: "chapterName",
     header: "Tên chương",
     cell: ({ row }) => (
       <Link
-        href={`/novels/${row.original.novelId}/${row.original._id}`}
+        href={`/${row.original.novelSlug}/${row.original.chapterIndex}`}
         className="hover:text-red-1"
       >
         {row.original.chapterName}

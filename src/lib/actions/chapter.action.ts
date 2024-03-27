@@ -5,19 +5,19 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 import Chapter from "@/lib/models/chapter.model";
 import Novel from "@/lib/models/novel.model";
 
-export const createChapter = async (formData) => {
-  const { novelSlug, chapterName, chapterNumber, content, addChapterType } =
-    formData;
+export const createChapter = async (data: any) => {
+  const { novelSlug, chapterName, chapterIndex, content, addChapterType } =
+    data;
   try {
     await connectToDB();
     if (addChapterType === "insert") {
       const chaptersToUpdate = await Chapter.find({
-        novelSlug: novelSlug,
-        chapterNumber: { $gte: chapterNumber },
+        novelSlug,
+        chapterIndex: { $gte: chapterIndex },
       });
 
       for (const chapter of chaptersToUpdate) {
-        chapter.chapterNumber += 1;
+        chapter.chapterIndex += 1;
         await chapter.save();
       }
     }
@@ -25,18 +25,18 @@ export const createChapter = async (formData) => {
     const newChapter = await Chapter.create({
       novelSlug,
       chapterName,
-      chapterNumber,
+      chapterIndex,
       content,
     });
 
     await Novel.findOneAndUpdate(
-      { slug: novelSlug },
+      { novelSlug },
       {
-        $inc: { numberOfChapter: 1 },
+        $inc: { chapterCount: 1 },
       }
     );
 
-    revalidatePath(`/writer/${novelSlug}`);
+    revalidatePath(`/${novelSlug}/danh-sach-chuong`);
     return { success: true, message: "Chương đã được tạo thành công!" };
   } catch (error) {
     console.error(error);
@@ -44,8 +44,8 @@ export const createChapter = async (formData) => {
   }
 };
 
-export const updateChapter = async (formData) => {
-  const { _id, chapterName, content } = formData;
+export const updateChapter = async (data: any) => {
+  const { _id, chapterName, content } = data;
   console.log(_id, chapterName, content);
   try {
     await connectToDB();
@@ -69,7 +69,7 @@ export const updateChapter = async (formData) => {
   }
 };
 
-export const deleteChapter = async (chapterId) => {
+export const deleteChapter = async (chapterId: string) => {
   try {
     await connectToDB();
     const chapter = await Chapter.findByIdAndDelete(chapterId);

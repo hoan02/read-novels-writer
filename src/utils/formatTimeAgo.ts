@@ -1,14 +1,13 @@
 import { format, differenceInMilliseconds } from "date-fns";
 import { vi } from "date-fns/locale";
 
-export default function formatTimeAgo(dateTime: string) {
+export default function formatTimeAgo(dateTime: Date) {
   const now = new Date();
-  const postTime = new Date(dateTime);
-  const diffMilliseconds = differenceInMilliseconds(now, postTime);
+  const diffMilliseconds = differenceInMilliseconds(now, dateTime);
 
   if (diffMilliseconds >= 31536000000) {
     // 1 year in milliseconds
-    return format(postTime, "dd/MM/yyyy", { locale: vi });
+    return format(dateTime, "dd/MM/yyyy", { locale: vi });
   } else if (diffMilliseconds >= 86400000) {
     // 1 day in milliseconds
     return `${Math.floor(diffMilliseconds / 86400000)} ngày trước`;
