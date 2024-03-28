@@ -18,6 +18,10 @@ const chapterSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    state: {
+      type: String,
+      default: "Chờ xét duyệt",
+    },
     isLock: {
       type: Boolean,
       default: false,

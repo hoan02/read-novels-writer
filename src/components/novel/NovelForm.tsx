@@ -56,7 +56,7 @@ const formSchema = z.object({
   description: z
     .string()
     .min(10, { message: "Mô tả phải chứa ít nhất 10 ký tự." })
-    .max(500, { message: "Mô tả không được vượt quá 500 ký tự." })
+    .max(1000, { message: "Mô tả không được vượt quá 1000 ký tự." })
     .trim(),
   urlCover: z.string().url({ message: "Hãy chọn ảnh bìa." }),
 });

@@ -66,14 +66,14 @@ export const deleteNovel = async (novelId: string) => {
     }
 
     // await Rating.deleteMany({ novelId: novelId });
-    await Chapter.deleteMany({ novelId: novelId });
+    await Chapter.deleteMany({ novelSlug: novel.novelSlug });
     // await Marked.deleteMany({ novelSlug: novel.slug });
 
     const deletedNovel = await Novel.findByIdAndDelete(novelId);
     if (!deletedNovel) {
       return new Error("Không tìm thấy truyện!");
     }
-
+    revalidatePath(`/danh-sach-truyen`);
     return { success: true, message: "Truyện đã được xóa!" };
   } catch (error) {
     console.error(error);

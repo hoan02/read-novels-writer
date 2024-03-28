@@ -76,9 +76,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
 
       if (res.success) {
         toast.success(res.message);
-        setTimeout(() => {
-          router.push(`/${dataNovel?.novelSlug}/danh-sach-chuong`);
-        }, 1000);
+        router.push(`/${dataNovel?.novelSlug}/danh-sach-chuong`);
       }
     } catch (err: any) {
       toast.error(err.message);

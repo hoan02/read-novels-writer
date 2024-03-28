@@ -3,6 +3,18 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import Delete from "../custom-ui/Delete";
+import { deleteChapter } from "@/lib/actions/chapter.action";
+import toast from "react-hot-toast";
+
+const handleDelete = async (row: any) => {
+  try {
+    const res = await deleteChapter(row.original._id, row.original.novelSlug);
+    if (res.success) toast.success(res.message);
+    else toast.error(res.message);
+  } catch (err: any) {
+    toast.error(err.message);
+  }
+};
 
 export const columns: ColumnDef<ChapterType>[] = [
   {
@@ -31,9 +43,8 @@ export const columns: ColumnDef<ChapterType>[] = [
     id: "actions",
     cell: ({ row }) => (
       <Delete
-        item="novel"
-        id={row.original._id}
         text={row.original.chapterName}
+        onDelete={() => handleDelete(row)}
       />
     ),
   },

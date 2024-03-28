@@ -1,40 +1,24 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
 import { connectToDB } from "@/lib/mongodb/mongoose";
-import Novel from "@/lib/models/novel.model";
 import Chapter from "@/lib/models/chapter.model";
+import createResponse from "@/utils/createResponse";
 
-export const getChapter = async (novelSlug: string) => {
+export const getChapter = async (novelSlug: string, chapterIndex: number) => {
   try {
     await connectToDB();
-    const { userId } = auth();
-    const novel = await Novel.findOne({
-      novelSlug: novelSlug,
+    const chapter = await Chapter.findOne({
+      novelSlug,
+      chapterIndex,
     });
 
-    if (!novel) {
-      return NextResponse.json(
-        { message: "Không tìm thấy truyện!" },
-        { status: 404 }
-      );
-    }
+    if (!chapter) return createResponse(null, "Không tìm thấy chương!", 404);
 
-    if (novel.uploader !== userId) {
-      return NextResponse.json(
-        { message: "Bạn không có quyền truy cập!" },
-        { status: 403 }
-      );
-    }
-
-    return NextResponse.json(novel, { status: 200 });
+    return createResponse(chapter, "Success!", 200);
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
-      { message: "Không tìm được truyện" },
-      { status: 500 }
-    );
+    return createResponse(null, "Error", 500);
   }
 };
 
@@ -44,13 +28,9 @@ export const getChapters = async (novelSlug: string) => {
     const chapters = await Chapter.find({
       novelSlug,
     });
-
-    return NextResponse.json(chapters, { status: 200 });
+    return createResponse(chapters, "Success!", 200);
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
-      { message: "Không tìm thấy danh sách truyện!" },
-      { status: 500 }
-    );
+    return createResponse(null, "Error", 500);
   }
 };

@@ -11,6 +11,8 @@ import {
   PlusCircle,
   Ellipsis,
 } from "lucide-react";
+import toast from "react-hot-toast";
+
 import { Button } from "../ui/button";
 import Delete from "../custom-ui/Delete";
 import { DataTableColumnHeader } from "../data-table/DataTableColumHeader";
@@ -22,6 +24,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import formatDate from "@/utils/formatDate";
+import { deleteNovel } from "@/lib/actions/novel.action";
+
+const handleDelete = async (row: any) => {
+  try {
+    const res = await deleteNovel(row.original._id);
+    if (res.success) toast.success(res.message);
+    else toast.error(res.message);
+  } catch (err: any) {
+    toast.error(err.message);
+  }
+};
 
 export const novelColumns: ColumnDef<NovelType>[] = [
   {
@@ -180,11 +193,7 @@ export const novelColumns: ColumnDef<NovelType>[] = [
             </Link>
           </DropdownMenuItem>
           <div className="px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-800 rounded">
-            <Delete
-              item="novel"
-              id={row.original._id}
-              text={row.original.novelName}
-            />
+            <Delete item="novel" onDelete={() => handleDelete} />
           </div>
         </DropdownMenuContent>
       </DropdownMenu>

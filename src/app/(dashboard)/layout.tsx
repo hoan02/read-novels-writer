@@ -4,7 +4,7 @@ import { Protect } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
 import "../globals.css";
-import Forbidden403 from "@/components/layouts/Forbidden403";
+import Forbidden from "@/components/layouts/Forbidden";
 import ClerkVIProvider from "@/lib/providers/ClerkVIProvider";
 import { ToasterProvider } from "@/lib/providers/ToasterProvider";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
@@ -38,7 +38,7 @@ export default function RootLayout({
           <Protect
             permission="org:writer:create"
             // role="org:writer"
-            fallback={<Forbidden403 />}
+            fallback={<Forbidden />}
           >
             <ThemeProvider
               attribute="class"

@@ -13,31 +13,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import toast from "react-hot-toast";
 
 interface DeleteProps {
   item: string;
   id: string;
   text: string;
+  onDelete: () => void;
 }
 
-const Delete: React.FC<DeleteProps> = ({ item, id, text }) => {
-  const onDelete = async () => {
-    try {
-      const itemType = item === "chapter" ? "chapters" : "novels";
-      const res = await fetch(`/api/${itemType}/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        window.location.href = `/${itemType}`;
-        toast.success(`${item} deleted`);
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong! Please try again.");
-    }
-  };
+const Delete: React.FC<DeleteProps> = ({ text, onDelete }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger className="flex items-center gap-4">

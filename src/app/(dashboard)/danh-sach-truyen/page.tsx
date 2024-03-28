@@ -1,21 +1,33 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { PlusCircle } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table/DataTable";
 import { novelColumns } from "@/components/novel/NovelColumns";
 import { getNovels } from "@/lib/data/novel.data";
-import { notFound } from "next/navigation";
 
 const ListNovelPage = async () => {
-  const res = await getNovels();
-  if (!res) {
-    notFound();
+  const { data: novels, message, status } = await getNovels();
+  if (status === 404) notFound();
+  if (status === 500) {
+    return <>{message}</>;
   }
-  const novels = await res.json();
-
-  return (
-    <>
-      <p className="">Truyện đã đăng</p>
-      <DataTable columns={novelColumns} data={novels} searchKey="novelName" />
-    </>
-  );
+  if (status === 200) {
+    return (
+      <div>
+        <div className="flex items-center justify-between">
+          <p className="text-xl font-semibold">Danh sách truyện</p>
+          <Link href={`/them-truyen`}>
+            <Button className="flex gap-2 items-center">
+              <PlusCircle size={20} /> Thêm truyện mới
+            </Button>
+          </Link>
+        </div>
+        <DataTable columns={novelColumns} data={novels} searchKey="novelName" />
+      </div>
+    );
+  }
 };
 
 export default ListNovelPage;

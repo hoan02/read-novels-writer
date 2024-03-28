@@ -1,18 +1,29 @@
+import Link from "next/link";
+import { PlusCircle } from "lucide-react";
+
 import { columns } from "@/components/chapter/ChapterColumns";
 import { DataTable } from "@/components/data-table/DataTable";
+import { Button } from "@/components/ui/button";
 import { getChapters } from "@/lib/data/chapter.data";
-import { useParams } from "next/navigation";
 
 const ListChapter = async ({ params }: { params: { novelSlug: string } }) => {
-  const res = await getChapters(params.novelSlug);
-  const chapters = await res.json();
+  const {
+    data: chapters,
+    message,
+    status,
+  } = await getChapters(params.novelSlug);
 
   return (
-    <div className="px-10 py-5">
+    <div className="">
       <div className="flex items-center justify-between">
-        <p className="text-heading2-bold">Danh sách chương</p>
+        <p className="text-xl font-semibold">Danh sách chương</p>
+        <Link href={`/${params.novelSlug}/them-chuong`}>
+          <Button className="flex gap-2 items-center">
+            <PlusCircle size={20} /> Thêm chương mới
+          </Button>
+        </Link>
       </div>
-      <DataTable columns={columns} data={chapters} searchKey="name" />
+      <DataTable columns={columns} data={chapters} searchKey="chapterName" />
     </div>
   );
 };

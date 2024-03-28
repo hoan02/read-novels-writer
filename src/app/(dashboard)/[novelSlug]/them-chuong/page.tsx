@@ -7,11 +7,10 @@ const CreateChapterPage = async ({
 }: {
   params: { novelSlug: string };
 }) => {
-  const res = await getNovel(params.novelSlug);
-  if (res.status === 404) {
+  const { data: novel, message, status } = await getNovel(params.novelSlug);
+  if (status === 404) {
     notFound();
   }
-  const novel = await res.json();
 
   return (
     <>

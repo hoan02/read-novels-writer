@@ -137,7 +137,7 @@ const Layout = ({
           <UserButton />
         </header>
         <main className="h-[calc(100vh-3.5rem)] p-2 lg:p-4 overflow-y-scroll scrollbar-thin">
-          <div>{children}</div>
+          <div className="w-full h-full">{children}</div>
         </main>
       </div>
     </div>

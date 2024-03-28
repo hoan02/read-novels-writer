@@ -2,7 +2,7 @@
 
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
-const Forbidden403 = () => {
+const Forbidden = () => {
   return (
     <div className="w-screen h-screen bg-[#342643] fixed">
       <div className="absolute top-4 right-4">
@@ -42,4 +42,4 @@ const Forbidden403 = () => {
   );
 };
 
-export default Forbidden403;
+export default Forbidden;

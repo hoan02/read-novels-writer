@@ -69,13 +69,22 @@ export const updateChapter = async (data: any) => {
   }
 };
 
-export const deleteChapter = async (chapterId: string) => {
+export const deleteChapter = async (chapterId: string, novelSlug: string) => {
   try {
     await connectToDB();
+    const novel = await Novel.findOneAndUpdate(
+      {
+        novelSlug,
+      },
+      {
+        $inc: { chapterCount: -1 },
+      }
+    );
     const chapter = await Chapter.findByIdAndDelete(chapterId);
     if (!chapter) {
       throw new Error("Không tìm thấy chương!");
     }
+    revalidatePath(`/${novelSlug}/danh-sach-chuong`);
     return { success: true, message: "Chương đã được xóa!" };
   } catch (error) {
     console.error(error);

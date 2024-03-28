@@ -31,10 +31,12 @@ type NovelType = {
 };
 
 type ChapterType = {
+  _id: String;
   novelSlug: String;
   chapterName: String;
   chapterIndex: Number;
   content: String;
+  state: String;
   isLock: Boolean;
   isPublic: Boolean;
   publishedDate: Date | null;

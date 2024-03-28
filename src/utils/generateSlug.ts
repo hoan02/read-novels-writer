@@ -1,6 +1,6 @@
 import slugify from "slugify";
 
-export const generateSlug = (name: string) => {
-  const slug = slugify(name, { replacement: "-", lower: true });
+export default function generateSlug(name: string) {
+  const slug = slugify(name, { replacement: "-", lower: true, locale: "vi" });
   return slug;
-};
+}

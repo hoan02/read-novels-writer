@@ -13,7 +13,7 @@ export const connectToDB = async () => {
   }
 
   if (isConnected) {
-    console.log("MongoDB đã được kết nối trước đó");
+    // console.log("MongoDB đã được kết nối trước đó");
     return;
   }
 
@@ -24,7 +24,7 @@ export const connectToDB = async () => {
 
     isConnected = true;
 
-    console.log("MongoDB đã kết nối");
+    // console.log("MongoDB đã kết nối");
   } catch (error) {
     console.error("Lỗi kết nối đến MongoDB:", error);
   }
