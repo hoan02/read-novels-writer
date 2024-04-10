@@ -15,16 +15,14 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface DeleteProps {
-  item: string;
-  id: string;
-  text: string;
+  text: String;
   onDelete: () => void;
 }
 
 const Delete: React.FC<DeleteProps> = ({ text, onDelete }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="flex items-center gap-4">
+      <AlertDialogTrigger className="flex items-center gap-4 hover:text-red-500">
         <Trash className="h-5 w-5" /> Xóa
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white text-grey-1">

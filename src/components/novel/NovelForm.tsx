@@ -28,6 +28,7 @@ import NovelGuidelines from "./NovelGuidelines";
 import {
   checkNovelName,
   createNovel,
+  deleteNovel,
   updateNovel,
 } from "@/lib/actions/novel.action";
 
@@ -122,6 +123,17 @@ const NovelForm: React.FC<NovelFormData> = ({ initialData }) => {
     }
   };
 
+  const handleDelete = async (novelId: string) => {
+    try {
+      const res: any = await deleteNovel(novelId);
+      if (res.success) toast.success(res.message);
+      else toast.error(res.message);
+      router.push("/danh-sach-truyen");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <NovelGuidelines />
@@ -131,8 +143,7 @@ const NovelForm: React.FC<NovelFormData> = ({ initialData }) => {
           <div className="flex items-center justify-between">
             <p className="text-2xl font-semibold">Chỉnh sửa truyện</p>
             <Delete
-              id={initialData._id}
-              item="novel"
+              onDelete={() => handleDelete(initialData._id)}
               text={initialData.novelName}
             />
           </div>

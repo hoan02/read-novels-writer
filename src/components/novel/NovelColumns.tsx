@@ -26,9 +26,9 @@ import {
 import formatDate from "@/utils/formatDate";
 import { deleteNovel } from "@/lib/actions/novel.action";
 
-const handleDelete = async (row: any) => {
+const handleDelete = async (novelId: string) => {
   try {
-    const res = await deleteNovel(row.original._id);
+    const res: any = await deleteNovel(novelId);
     if (res.success) toast.success(res.message);
     else toast.error(res.message);
   } catch (err: any) {
@@ -192,8 +192,11 @@ export const novelColumns: ColumnDef<NovelType>[] = [
               <Link2 size={20} /> Đọc truyện
             </Link>
           </DropdownMenuItem>
-          <div className="px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-800 rounded">
-            <Delete item="novel" onDelete={() => handleDelete} />
+          <div className="px-2 py-1.5 text-sm outline-none transition-colors rounded">
+            <Delete
+              text={row.original.novelName}
+              onDelete={() => handleDelete(row.original._id)}
+            />
           </div>
         </DropdownMenuContent>
       </DropdownMenu>

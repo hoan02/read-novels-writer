@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs";
 import { connectToDB } from "@/lib/mongodb/mongoose";
 import Novel from "@/lib/models/novel.model";
-import { generateSlug } from "@/utils/generateSlug";
 import Chapter from "../models/chapter.model";
+import generateSlug from "@/utils/generateSlug";
 
 export const createNovel = async (data: any) => {
   const { novelName, author, genres, description, urlCover } = data;
