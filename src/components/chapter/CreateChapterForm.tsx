@@ -67,7 +67,7 @@ const CreateChapterForm: React.FC<CreateChapterFormProps> = ({ dataNovel }) => {
     if (addChapterType === "next") {
       form.setValue("chapterIndex", numNextChap);
     }
-  }, [form.getValues("addChapterType")]);
+  }, [form, numNextChap]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const data = { ...values, novelSlug: dataNovel?.novelSlug };

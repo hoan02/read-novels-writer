@@ -65,11 +65,36 @@ const menuNav: MenuNav[] = [
   },
 ];
 
-const Layout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+interface ChildMenuNav {
+  label: string;
+  items: MenuNav[];
+}
+
+const ChildMenuNav = ({ label, items }: ChildMenuNav) => {
+  const currentPath = usePathname();
+  return (
+    <div className="mt-2">
+      <p className="my-2 font-bold text-xs text-muted-foreground">{label}</p>
+      {items.map((item) => {
+        const Icon = item.icon;
+        return (
+          <Link
+            href={item.href}
+            key={item.label}
+            className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
+              currentPath === item.href ? "bg-muted text-primary" : ""
+            }`}
+          >
+            <Icon size={20} />
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const currentPath = usePathname();
   return (
     <div className="grid h-screen w-full md:grid-cols-[200px_1fr] lg:grid-cols-[260px_1fr] overflow-y-hidden">
@@ -140,35 +165,6 @@ const Layout = ({
           <div className="w-full h-full">{children}</div>
         </main>
       </div>
-    </div>
-  );
-};
-
-interface ChildMenuNav {
-  label: string;
-  items: MenuNav[];
-}
-
-const ChildMenuNav = ({ label, items }: ChildMenuNav) => {
-  const currentPath = usePathname();
-  return (
-    <div className="mt-2">
-      <p className="my-2 font-bold text-xs text-muted-foreground">{label}</p>
-      {items.map((item) => {
-        const Icon = item.icon;
-        return (
-          <Link
-            href={item.href}
-            key={item.label}
-            className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-              currentPath === item.href ? "bg-muted text-primary" : ""
-            }`}
-          >
-            <Icon size={20} />
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
     </div>
   );
 };
