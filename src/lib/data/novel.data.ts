@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { connectToDB } from "@/lib/mongodb/mongoose";
 import Novel from "@/lib/models/novel.model";
 import createResponse from "@/utils/createResponse";

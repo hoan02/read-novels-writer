@@ -31,3 +31,5 @@ const ListNovelPage = async () => {
 };
 
 export default ListNovelPage;
+
+export const dynamic = "force-dynamic";
