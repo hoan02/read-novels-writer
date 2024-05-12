@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
-import { connectToDB } from "@/lib/mongodb/mongoose";
+import connectToDB from "@/lib/mongodb/mongoose";
 import Novel from "@/lib/models/novel.model";
 import Chapter from "../models/chapter.model";
 import generateSlug from "@/utils/generateSlug";

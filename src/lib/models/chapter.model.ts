@@ -20,7 +20,7 @@ const chapterSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      default: "Chờ xét duyệt",
+      default: "chưa duyệt",
     },
     isLock: {
       type: Boolean,
