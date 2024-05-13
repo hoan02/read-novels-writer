@@ -7,35 +7,22 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../ui/textarea";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Checkbox } from "../ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { useEffect } from "react";
-import ReactQuill from "react-quill";
+
 import "react-quill/dist/quill.snow.css";
 import TextEditor from "../custom-ui/TextEditor";
+import { updateChapter } from "@/lib/actions/chapter.action";
 
 const formSchema = z.object({
   chapterName: z.string().min(2).max(150),
   content: z.string().min(1).trim(),
-  // isLock: z.boolean(),
-  // price: z.number(),
-  // isPublic: z.boolean(),
 });
 
 interface EditChapterFormProps {
@@ -56,23 +43,20 @@ const EditChapterForm: React.FC<EditChapterFormProps> = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const chapterRequest = fetch(`/api/chapters/${dataChapter?._id}`, {
-        method: "POST",
-        body: JSON.stringify({ ...values }),
-      });
-
-      toast.promise(chapterRequest, {
-        loading: "Loading...",
-        success: `Chương đã được ${dataChapter ? "cập nhật" : "tạo mới"}`,
-        error: "Có lỗi xảy ra! Vui lòng thử lại.",
-      });
-
-      const res = await chapterRequest;
-
-      if (res.ok) {
-        setTimeout(() => {
-          router.push(`/novels/${dataNovel?._id}/list-chapter`);
-        }, 1000);
+      const id = dataChapter?._id;
+      const params = { ...values };
+      const toastId = toast.loading("Loading...");
+      if (id) {
+        const res = await updateChapter(id, params);
+        toast.dismiss(toastId);
+        if (res.success) {
+          toast.success(res.message);
+          setTimeout(() => {
+            router.push(`/${dataNovel?.novelSlug}/danh-sach-chuong`);
+          }, 1000);
+        } else {
+          toast.error(res.message);
+        }
       }
     } catch (error) {
       console.error("[chapters_POST]", error);
@@ -113,50 +97,8 @@ const EditChapterForm: React.FC<EditChapterFormProps> = ({
               </FormItem>
             )}
           />
-
-          {/* <FormField
-            control={form.control}
-            name="isLock"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Khóa chương</FormLabel>
-                <FormControl>
-                  <Checkbox />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Giá chương</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="isPublic"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Chương công khai</FormLabel>
-                <FormControl>
-                  <Checkbox />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
         </div>
-        <Button className="bg-blue-1 text-white my-10" type="submit">
+        <Button className="my-10" type="submit">
           Submit
         </Button>
       </form>

@@ -34,7 +34,7 @@ type ChapterType = {
   _id: string;
   novelSlug: string;
   chapterName: string;
-  chapterIndex: Number;
+  chapterIndex: number;
   content: string;
   state: string;
   isLock: Boolean;

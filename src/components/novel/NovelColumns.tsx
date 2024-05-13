@@ -25,6 +25,7 @@ import {
 } from "../ui/dropdown-menu";
 import formatDate from "@/utils/formatDate";
 import { deleteNovel } from "@/lib/actions/novel.action";
+import { DataTableColumnHeaderButton } from "../data-table/DataTableColumHeaderButton";
 
 const handleDelete = async (novelId: string) => {
   try {
@@ -64,79 +65,46 @@ export const novelColumns: ColumnDef<NovelType>[] = [
   {
     accessorKey: "novelName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên truyện" />
+      <DataTableColumnHeaderButton column={column} title="Tên truyện" />
     ),
     cell: ({ row }) => (
       <div className="lg:w-[400px] truncate font-medium">
-        {row.original.novelName}
+        <Link
+          href={`/${row.original.novelSlug}/danh-sach-chuong`}
+          className="hover:text-red-1 w-[400px]"
+        >
+          {row.original.novelName}
+        </Link>
       </div>
     ),
   },
   {
     accessorKey: "chapterCount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Chương
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-end mr-8">{row.original.chapterCount}</div>
+    header: ({ column }) => (
+      <DataTableColumnHeaderButton column={column} title="Chương" />
     ),
+    cell: ({ row }) => <div>{row.original.chapterCount}</div>,
   },
   {
     accessorKey: "readCount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Lượt đọc
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-end mr-8">{row.original.readCount}</div>
+    header: ({ column }) => (
+      <DataTableColumnHeaderButton column={column} title="Lượt đọc" />
     ),
+    cell: ({ row }) => <div>{row.original.readCount}</div>,
   },
   {
     accessorKey: "state",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Trạng thái
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="ml-4">{row.original.state}</div>,
+    header: ({ column }) => (
+      <DataTableColumnHeaderButton column={column} title="Trạng thái" />
+    ),
+    cell: ({ row }) => <div>{row.original.state}</div>,
   },
   {
     accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ngày đăng
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="ml-4">{formatDate(row.original.createdAt)}</div>
+    header: ({ column }) => (
+      <DataTableColumnHeaderButton column={column} title="Ngày đăng" />
     ),
+    cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
   },
   {
     id: "actions",
@@ -148,7 +116,7 @@ export const novelColumns: ColumnDef<NovelType>[] = [
             variant="ghost"
             className="flex size-8 p-0 data-[state=open]:bg-muted"
           >
-            <Ellipsis />
+            <Ellipsis className="text-gray-400" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px] p-2">

@@ -44,24 +44,16 @@ export const createChapter = async (data: any) => {
   }
 };
 
-export const updateChapter = async (data: any) => {
-  const { _id, chapterName, content } = data;
-  console.log(_id, chapterName, content);
+export const updateChapter = async (id: string, params: any) => {
   try {
     await connectToDB();
-    const chapter = await Chapter.findByIdAndUpdate(
-      _id,
-      {
-        chapterName,
-        content,
-      },
-      {
-        new: true,
-      }
-    );
+    const chapter = await Chapter.findByIdAndUpdate(id, params, {
+      new: true,
+    });
     if (!chapter) {
       throw new Error("Không tìm thấy chương!");
     }
+    revalidatePath(`/${chapter.novelSlug}/danh-sach-chuong`);
     return { success: true, message: "Chương đã được cập nhật!" };
   } catch (error) {
     console.error(error);

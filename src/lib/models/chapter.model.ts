@@ -24,7 +24,7 @@ const chapterSchema = new mongoose.Schema(
     },
     isLock: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isPublic: {
       type: Boolean,
