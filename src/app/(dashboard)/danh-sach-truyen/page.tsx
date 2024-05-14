@@ -15,7 +15,7 @@ const ListNovelPage = async () => {
   }
   if (status === 200) {
     return (
-      <div>
+      <div className="pb-6">
         <div className="flex items-center justify-between">
           <p className="text-xl font-semibold">Danh sách truyện</p>
           <Link href={`/them-truyen`}>

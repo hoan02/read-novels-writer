@@ -144,14 +144,14 @@ export const novelColumns: ColumnDef<NovelType>[] = [
               <FilePenLine size={20} /> Chỉnh sửa truyện
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <Link
               href={`/${row.original.novelSlug}/thong-ke`}
               className="flex gap-4 items-center"
             >
               <AreaChart size={20} /> Thống kê
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem>
             <Link
               href={`${process.env.NEXT_PUBLIC_READER_URL}truyen/${row.original.novelSlug}`}

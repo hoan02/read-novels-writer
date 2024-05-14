@@ -1,7 +1,6 @@
-import { CldUploadWidget } from "next-cloudinary";
-import { Trash } from "lucide-react";
-
 import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary";
+import { Trash, Upload } from "lucide-react";
 
 interface ImageUploadProps {
   value: string;
@@ -58,9 +57,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             return (
               <button
                 onClick={() => open()}
-                className="text-green-700 w-[300px] h-[400px] rounded-lg border-2"
+                className="text-green-700 w-[300px] h-[400px] rounded-lg border-[1px] border-dashed flex justify-center items-center"
               >
-                Chọn ảnh
+                <Upload />
               </button>
             );
           }}

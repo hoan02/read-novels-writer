@@ -42,7 +42,6 @@ export const getNominations = async (startDate: Date) => {
         },
       },
     ]);
-    console.log(nominations);
     return createResponse(nominations, "Success!", 200);
   } catch (err) {
     console.log(err);
