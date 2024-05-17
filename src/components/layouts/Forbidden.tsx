@@ -32,12 +32,12 @@ const Forbidden = () => {
         <div className="mt-10 text-gray-300">
           <p>
             Chỉ có{" "}
-            <span className="font-semibold text-green-400">cộng tác viên</span>{" "}
+            <span className="font-semibold text-green-400">nhà viết truyện</span>{" "}
             mới có quyền truy cập vào nội dung này!
           </p>
           <p>
             Nếu bạn muốn trở thành
-            <span className="font-semibold"> cộng tác viên</span> hãy liên hệ
+            <span className="font-semibold"> nhà viết truyện</span> hãy liên hệ
             với:
             <a
               href="mailto:lehoan.dev@gmail.com"

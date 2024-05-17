@@ -26,7 +26,7 @@ const OrderByMonthChart = ({
 }) => {
   console.log(data);
   return (
-    <ResponsiveContainer width="100%" minHeight={300}>
+    <ResponsiveContainer width="100%" height={340}>
       <BarChart data={data}>
         <CartesianGrid stroke="hsl(var(--muted))" />
         <XAxis dataKey="name" stroke="hsl(var(--primary))"/>

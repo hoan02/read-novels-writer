@@ -85,8 +85,8 @@ const StatsPage = async () => {
               </CardHeader>
             </Card>
           </div>
-          <Card>
-            <CardTitle className="m-5 text-xl">
+          <Card className="h-[396px]">
+            <CardTitle className="m-3 text-xl">
               Biểu đồ lượt đọc năm {currentDate.getFullYear()}
             </CardTitle>
             <OrderByMonthChart label="lượt đọc" data={dataChart} />
