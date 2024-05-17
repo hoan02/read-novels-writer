@@ -35,7 +35,9 @@ const StatsPage = async () => {
   const { data: monthlyStats } = monthlyStatsResult;
   const { data: dataChart } = allMonthlyStatsResult;
 
-  const updateTime = formatDate(monthlyStats?.updatedAt);
+  const updateTime = monthlyStats?.updatedAt
+    ? formatDate(monthlyStats?.updatedAt)
+    : "";
 
   return (
     <div>

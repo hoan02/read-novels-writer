@@ -18,13 +18,18 @@ export const getNominations = async (startDate: Date) => {
       },
       {
         $lookup: {
-          from: "novels", // Assuming the collection name is 'novels'
+          from: "novels", 
           localField: "novelSlug",
           foreignField: "novelSlug",
           as: "novel",
         },
       },
       { $unwind: "$novel" },
+      {
+        $match: {
+          "novel.uploader": userId,
+        },
+      },
       {
         $lookup: {
           from: "users",
@@ -34,6 +39,11 @@ export const getNominations = async (startDate: Date) => {
         },
       },
       { $unwind: "$user" },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
       {
         $project: {
           updatedAt: 1,
