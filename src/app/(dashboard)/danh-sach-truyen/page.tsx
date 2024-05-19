@@ -24,7 +24,12 @@ const ListNovelPage = async () => {
             </Button>
           </Link>
         </div>
-        <DataTable columns={novelColumns} data={novels} searchKey="novelName" />
+        <DataTable
+          columns={novelColumns}
+          data={novels}
+          searchKey="novelName"
+          searchName="tên truyện"
+        />
       </div>
     );
   }
