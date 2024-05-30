@@ -8,7 +8,8 @@ import Chapter from "../models/chapter.model";
 import generateSlug from "@/utils/generateSlug";
 
 export const createNovel = async (data: any) => {
-  const { novelName, author, genres, description, urlCover } = data;
+  const { novelName, author, genres, shortDescription, description, urlCover } =
+    data;
   const novelSlug = generateSlug(novelName);
   try {
     const { userId } = auth();
@@ -18,6 +19,7 @@ export const createNovel = async (data: any) => {
       novelSlug,
       author,
       genres,
+      shortDescription,
       description,
       urlCover,
       uploader: userId,
@@ -32,11 +34,19 @@ export const createNovel = async (data: any) => {
 };
 
 export const updateNovel = async (data: any) => {
-  const { novelId, novelName, genres, author, urlCover, description } = data;
+  const {
+    novelId,
+    novelName,
+    genres,
+    author,
+    urlCover,
+    shortDescription,
+    description,
+  } = data;
   const novelSlug = generateSlug(novelName);
   try {
     await connectToDB();
-    await Novel.findByIdAndUpdate(
+    const novel = await Novel.findByIdAndUpdate(
       novelId,
       {
         novelName,
@@ -44,12 +54,14 @@ export const updateNovel = async (data: any) => {
         genres,
         author,
         urlCover,
+        shortDescription: "okoko",
         description,
       },
       {
         new: true,
       }
     );
+    console.log(novel);
     revalidatePath("/danh-sach-truyen");
   } catch (err) {
     return new Error("Không thể cập nhật truyện!");

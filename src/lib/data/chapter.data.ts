@@ -27,7 +27,11 @@ export const getChapters = async (novelSlug: string) => {
     await connectToDB();
     const chapters = await Chapter.find({
       novelSlug,
-    });
+    })
+      .select("_id chapterIndex state isPublic isLock chapterName")
+      .sort({
+        chapterIndex: 1,
+      });
     return createResponse(chapters, "Success!", 200);
   } catch (err) {
     console.log(err);

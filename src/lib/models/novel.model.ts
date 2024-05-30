@@ -39,11 +39,14 @@ const novelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    shortDescription: {
+      type: String,
+      default: "",
+    },
     description: {
       type: String,
       required: true,
     },
-
     reviews: {
       count: {
         type: Number,

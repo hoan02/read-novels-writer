@@ -31,6 +31,7 @@ import {
   deleteNovel,
   updateNovel,
 } from "@/lib/actions/novel.action";
+import TextEditor from "../custom-ui/TextEditor";
 
 const OPTIONS: Option[] = novelGenres.map((genre) => ({
   label: genre.name,
@@ -54,10 +55,14 @@ const formSchema = z.object({
     .string()
     .min(5, { message: "Tên tác giả phải chứa ít nhất 5 ký tự." })
     .max(50, { message: "Tên tác giả không được vượt quá 50 ký tự." }),
+  shortDescription: z
+    .string()
+    .min(10, { message: "Mô tả ngắn phải chứa ít nhất 10 ký tự." })
+    .max(1000, { message: "Mô tả ngắn không được vượt quá 200 ký tự." })
+    .trim(),
   description: z
     .string()
     .min(10, { message: "Mô tả phải chứa ít nhất 10 ký tự." })
-    .max(1000, { message: "Mô tả không được vượt quá 1000 ký tự." })
     .trim(),
   urlCover: z.string().url({ message: "Hãy chọn ảnh bìa." }),
 });
@@ -69,6 +74,7 @@ interface NovelFormData {
     genres: Option[];
     author: string;
     description: string;
+    shortDescription: string;
     urlCover: string;
   } | null;
 }
@@ -83,6 +89,7 @@ const NovelForm: React.FC<NovelFormData> = ({ initialData }) => {
           novelName: initialData.novelName,
           genres: initialData.genres,
           author: initialData.author,
+          shortDescription: initialData.shortDescription,
           description: initialData.description,
           urlCover: initialData.urlCover,
         }
@@ -90,6 +97,7 @@ const NovelForm: React.FC<NovelFormData> = ({ initialData }) => {
           novelName: "",
           genres: [],
           author: "",
+          shortDescription: "",
           description: "",
           urlCover: "",
         },
@@ -222,12 +230,28 @@ const NovelForm: React.FC<NovelFormData> = ({ initialData }) => {
                 />
                 <FormField
                   control={form.control}
-                  name="description"
+                  name="shortDescription"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Mô tả ngắn</FormLabel>
                       <FormControl>
                         <Textarea placeholder="" {...field} rows={5} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mô tả</FormLabel>
+                      <FormControl>
+                        <TextEditor
+                          value={field.value}
+                          onChange={(content) => field.onChange(content)}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

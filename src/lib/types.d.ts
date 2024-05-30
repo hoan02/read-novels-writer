@@ -7,6 +7,7 @@ type NovelType = {
   tags: string[];
   urlCover: string;
   uploader: string;
+  shortDescription: string;
   description: string;
   nominations: number;
   reviews: {
@@ -42,4 +43,3 @@ type ChapterType = {
   isPublic: boolean;
   publishedDate: Date | null;
 };
-

@@ -139,7 +139,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
+            <SheetContent side="left" className="flex flex-col max-w-[300px]">
               <nav className="grid gap-2 text-lg font-medium">
                 {menuNav.map((item) => {
                   const IconComponent = item.icon;
