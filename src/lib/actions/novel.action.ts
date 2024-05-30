@@ -54,7 +54,7 @@ export const updateNovel = async (data: any) => {
         genres,
         author,
         urlCover,
-        shortDescription: "okoko",
+        shortDescription,
         description,
       },
       {
