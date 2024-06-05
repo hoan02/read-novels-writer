@@ -28,7 +28,7 @@ export const getChapters = async (novelSlug: string) => {
     const chapters = await Chapter.find({
       novelSlug,
     })
-      .select("_id chapterIndex state isPublic isLock chapterName")
+      .select("_id novelSlug chapterIndex state isPublic isLock chapterName")
       .sort({
         chapterIndex: 1,
       });
