@@ -43,11 +43,11 @@ const menuNav: MenuNav[] = [
     label: "Thống kê",
     icon: PieChart,
   },
-  {
-    href: "/xu-ly-bao-cao",
-    label: "Xử lý báo cáo",
-    icon: Flag,
-  },
+  // {
+  //   href: "/xu-ly-bao-cao",
+  //   label: "Xử lý báo cáo",
+  //   icon: Flag,
+  // },
   {
     href: "/yeu-cau-ho-tro",
     label: "Yêu cầu hỗ trợ",
@@ -112,11 +112,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 label="TRUYỆN CỦA TÔI"
                 items={menuNav.slice(0, 3)}
               />
-              <ChildMenuNav
+              {/* <ChildMenuNav
                 label="BÁO CÁO & HỖ TRỢ"
                 items={menuNav.slice(3, 5)}
-              />
-              <ChildMenuNav label="HỆ THỐNG" items={menuNav.slice(5, 7)} />
+              /> */}
+              <ChildMenuNav label="HỆ THỐNG" items={menuNav.slice(4, 5)} />
             </nav>
           </div>
           <div className="mt-auto m-2 p-4 border-dashed border-2 text-center">
