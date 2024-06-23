@@ -58,11 +58,11 @@ const menuNav: MenuNav[] = [
     label: "Kiến thức cơ bản",
     icon: MessageCircleQuestion,
   },
-  {
-    href: "/bao-loi",
-    label: "Báo lỗi",
-    icon: Bug,
-  },
+  // {
+  //   href: "/bao-loi",
+  //   label: "Báo lỗi",
+  //   icon: Bug,
+  // },
 ];
 
 interface ChildMenuNav {

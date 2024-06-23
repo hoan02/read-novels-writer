@@ -19,9 +19,9 @@ export default function RootLayout({
     <ClerkVIProvider>
       <html lang="vi">
         <body
-          className={`${inter.className} h-screen w-screen flex items-center`}
+          className={`${inter.className} min-h-screen w-screen flex items-center`}
         >
-          <div className="mx-auto">{children}</div>
+          <div className="m-auto py-10">{children}</div>
         </body>
       </html>
     </ClerkVIProvider>
